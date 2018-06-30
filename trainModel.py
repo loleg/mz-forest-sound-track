@@ -10,7 +10,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn.utils import shuffle
 
 N_DIM = 161 # number of dimensions
-TRAINING_EPOCHS = 5000
+TRAINING_EPOCHS = 1000
+THE_PATIENCE = 32
 SAMPLE_RATE = 48000
 SAMPLE_DURATION = 4.0
 
@@ -134,7 +135,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 batch_size = 10000
 patience_cnt = 0
-patience = 16
+patience = THE_PATIENCE
 min_delta = 0.01
 stopping = 0
 

@@ -7,6 +7,7 @@ import sounddevice
 
 from sklearn.preprocessing import StandardScaler
 
+N_DIM = 161 # number of dimensions
 duration = 1.0  # seconds
 sample_rate = 48000
 
@@ -36,10 +37,11 @@ fit_params = np.load('fit_params.npy')
 sc = StandardScaler()
 sc.fit(fit_params)
 
-n_dim = 161
+n_dim = N_DIM
 n_classes = len(sub_dirs)-1
 n_hidden_units_one = 256
 n_hidden_units_two = 256
+n_hidden_units_three = 256
 sd = 1 / np.sqrt(n_dim)
 learning_rate = 0.01
 
@@ -54,9 +56,13 @@ W_2 = tf.Variable(tf.random_normal([n_hidden_units_one,n_hidden_units_two], mean
 b_2 = tf.Variable(tf.random_normal([n_hidden_units_two], mean = 0, stddev=sd))
 h_2 = tf.nn.sigmoid(tf.matmul(h_1,W_2) + b_2)
 
+W_3 = tf.Variable(tf.random_normal([n_hidden_units_one,n_hidden_units_two,n_hidden_units_three], mean = 0, stddev=sd))
+b_3 = tf.Variable(tf.random_normal([n_hidden_units_three], mean = 0, stddev=sd))
+h_3 = tf.nn.sigmoid(tf.matmul(h_2,W_3) + b_3 )
+
 W = tf.Variable(tf.random_normal([n_hidden_units_two,n_classes], mean = 0, stddev=sd))
 b = tf.Variable(tf.random_normal([n_classes], mean = 0, stddev=sd))
-y_ = tf.nn.softmax(tf.matmul(h_2,W) + b)
+y_ = tf.nn.softmax(tf.matmul(h_3,W) + b)
 
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
