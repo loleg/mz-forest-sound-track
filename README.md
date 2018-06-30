@@ -2,9 +2,9 @@ Our project addresses the [City Forest Visitors](https://makezurich.ch/box/2/) c
 
 #### Why are we doing this?
 
-Bird watching is a popular pastime activity, and several apps[1][2] exist for detecting and recording bird songs. We are trying to duplicate these functions while brainstorming how to stay within or close to the low-power parameters of **LoRaWAN**, because we believe there to be value in monitoring the sounds of the forest over long periods of time or in remote areas. The low cost approach facilitated by The Things Network ensures that this project could be reproduced by both scientists and amateurs alike.
+Every living thing in a forest has its sound. To identify creatures, classify and trace them, sound detection has many promising potentials. With a focus on how to stay within or close to the low-power parameters of **LoRaWAN**, we want to monitor the sounds of the forest over long periods of time or in remote areas. The low cost approach facilitated by The Things Network ensures that this project could be reproduced by both scientists, city-planners and amateurs alike. 
 
-Unlike smartphone apps, whose data depends on the user's schedule, the data produced by our sensor could potentially cover the entire day and night time spectrum. An important use case could also be monitoring the interaction between animals and humans. Our dataset could easily encompass bird and human sounds (footsteps, voices, ...) to study behavior patterns.
+Unlike smartphone apps, whose data depends on the user's schedule, the data produced by our sensor could potentially cover the entire day and night time spectrum. An important use case could also be monitoring the interaction between animals and humans. Our dataset could easily encompass bird and human sounds (footsteps, voices, ...) to study behavior patterns. An examplery target group would bird watchers. Bird watching is a popular pastime activity, and several apps[1][2] exist for detecting and recording bird songs. 
 
 #### What we tried (so far..)
 
