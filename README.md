@@ -9,12 +9,15 @@ Unlike smartphone apps, whose data depends on the user's schedule, the data prod
 #### What we tried (so far..)
 
 - Did research into the idea, discovering numerous projects and even whole competitions to automatically detect and classify bird song. These led us to datasets, sample code, and pro tips.
-- Looked into the possibility of doing audio classification on low-power chips (Atmega/Arduino) and discussed the idea with an expert in Arduino sound sensors (Baxter). Despite interesting libraries ([walrus](https://github.com/walrus/walrus), [Neurona](http://www.moretticb.com/Neurona/)) and research ([Evolutionary Bits'n'Spikes](https://infoscience.epfl.ch/record/63939) from EPFL!) the low recording quality and limited processing power and capacity would limit our options here severely.
-- We discussed the issue of power draw of the Raspberry Pi, to find out how we could activate the device on a timer (use a MOSFET) and prolong battery life (use the sun).
-- Looked into the option of attaching a LoRaWAN antenna directly to Raspberry Pi, but decided to keep an Arduino as part of our hack with which we communicate via USB serial.
-- Started putting together a training dataset with crowdsourced (Xeno-Canto) bird song samples from the Zürich region.
-- Starting work on a training and classification script.
+- Started putting together a training dataset with crowdsourced (Xeno-Canto) bird song samples from the Zürich region. [Download it here](https://blog.datalets.ch/workshops/2018/makezurich/mz-forest-bird-data.zip)
+- Starting work on a training and classification script. Currently the code closely follows [GianlucaPaolocci/Sound-classification-on-Raspberry-Pi-with-Tensorflow](https://github.com/GianlucaPaolocci/Sound-classification-on-Raspberry-Pi-with-Tensorflow)
 - Started an example [forest map](https://map.geo.admin.ch/?lang=en&topic=ech&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.swisstopo.zeitreihen,ch.bfs.gebaeude_wohnungs_register,ch.bav.haltestellen-oev,ch.swisstopo.swisstlm3d-wanderwege,ch.swisstopo.vec200-landcover-wald,ch.bafu.bundesinventare-vogelreservate,KML%7C%7Chttps:%2F%2Fpublic.geo.admin.ch%2FnX-OP2f_RbukVK7KrgjDDA&layers_visibility=false,false,false,false,true,true,true&layers_timestamp=18641231,,,,,,&layers_opacity=1,1,1,1,0.75,0.75,1&E=2678722.79&N=1245542.59&zoom=4.492539968390444)
+
+We also...
+
+- Looked into the possibility of doing audio classification on low-power chips (Atmega/Arduino) and discussed the idea with an expert in Arduino sound sensors (Baxter). Despite interesting libraries ([walrus](https://github.com/walrus/walrus), [Neurona](http://www.moretticb.com/Neurona/)) and research ([Evolutionary Bits'n'Spikes](https://infoscience.epfl.ch/record/63939) from EPFL!) the low recording quality and limited processing power and capacity would limit our options here severely.
+- Discussed the issue of power draw of the Raspberry Pi, to find out how we could activate the device on a timer (use a MOSFET) and prolong battery life (use the sun).
+- Investigated the option of attaching a LoRaWAN antenna directly to Raspberry Pi, but decided to keep an Arduino as part of our hack with which we communicate via USB serial.
 
 ### Data sources
 
