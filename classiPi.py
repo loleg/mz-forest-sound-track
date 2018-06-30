@@ -4,6 +4,7 @@ import librosa
 import numpy as np
 import tensorflow as tf
 import sounddevice
+import serial
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import precision_recall_fscore_support
@@ -12,6 +13,7 @@ N_DIM = 161 # number of dimensions
 duration = 4.0  # seconds
 sample_rate = 48000
 
+SERIAL_PORT = '/dev/ttyUSB0'
 parent_dir = "data"
 model_path = "model/snapshot"
 sub_dirs = os.listdir(parent_dir)
@@ -108,19 +110,31 @@ with tf.Session() as sess:
 
         d, total = {}, 0
         for p in y_pred:
-            if p == 0 or p == 6: continue
+            if p == 0: continue
             if not sub_dirs[p] in d: d[sub_dirs[p]] = 0
             d[sub_dirs[p]] = d[sub_dirs[p]] + 1
             total = total + 1
 
-        e = {}
-        for k in d.keys():
+        e = []
+        for n,k in enumerate(d.keys()):
             d[k] = d[k] / len(y_pred)
-            if k == "Warbler":
-                if d[k] > 0.5: e[k] = d[k]
-            else:
-                e[k] = d[k]
-
+            if k == "Warbler" and d[k] < 0.4: continue
+            e.append({
+                'name': k,
+                'prob': d[k]
+            })
         print(e)
+
+        for bird in e:
+            if bird['prob']>0.4:
+                f = sub_dirs.index(bird['name'])
+                ser = serial.Serial(SERIAL_PORT, 9600)
+                msg = ''.join([str(f), '\n'])
+                print("Sending %s to Arduino %s" % (bird['name'], msg))
+                for b in bytearray(msg, "UTF-8"):
+                    ser.write(b)
+                # print(ser.readline())
+                ser.close()
+
 
         # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
