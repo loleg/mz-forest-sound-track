@@ -6,6 +6,7 @@ import tensorflow as tf
 import sounddevice
 
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import precision_recall_fscore_support
 
 N_DIM = 161 # number of dimensions
 duration = 4.0  # seconds
@@ -107,13 +108,19 @@ with tf.Session() as sess:
 
         d, total = {}, 0
         for p in y_pred:
-            if p == 0: continue
+            if p == 0 or p == 6: continue
             if not sub_dirs[p] in d: d[sub_dirs[p]] = 0
             d[sub_dirs[p]] = d[sub_dirs[p]] + 1
             total = total + 1
 
+        e = {}
         for k in d.keys():
             d[k] = d[k] / len(y_pred)
-        print(d)
+            if k == "Warbler":
+                if d[k] > 0.5: e[k] = d[k]
+            else:
+                e[k] = d[k]
 
-        # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')  
+        print(e)
+
+        # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
