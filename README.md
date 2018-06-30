@@ -38,7 +38,7 @@ We also...
 - [Compiling TensorFlow on RasPi](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/makefile#raspberry-pi) vs [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/)
 - TensorFlow [implementation of SoundNet](https://github.com/eborboihuc/SoundNet-tensorflow) and [Audio Recognition tutorial](https://www.tensorflow.org/tutorials/audio_recognition)
 - Interfacing Arduino with Raspi: [Hackster](https://www.hackster.io/sankarCheppali/interfacing-arduino-with-raspberry-pi-6d9870), [Instructables](http://www.instructables.com/id/Raspberry-Pi-Arduino-Serial-Communication/)
-[1](https://doi.org/10.1016/j.anbehav.2012.04.038)
+
 
 More use cases, libraries, interesting datasets and example projects can currently be found in our Slack channel #mz-forest-sound-track
 
