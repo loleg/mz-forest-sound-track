@@ -1,3 +1,5 @@
+![alt text](https://github.com/loleg/mz-forest-sound-track/blob/master/Picture1.png)
+
 Our project addresses the [City Forest Visitors](https://makezurich.ch/box/2/) challenge using sound measurements and machine learning techniques. We have creatively interpreted "Visitors" to also mean animals, initially focusing on birds.
 
 #### Why are we doing this?
