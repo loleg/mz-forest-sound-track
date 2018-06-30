@@ -10,6 +10,10 @@ from sklearn.cross_validation import train_test_split
 from sklearn.utils import shuffle
 
 N_DIM = 161 # number of dimensions
+TRAINING_EPOCHS = 5000
+SAMPLE_RATE = 48000
+SAMPLE_DURATION = 4.0
+
 parent_dir = "data"
 model_path = "model/snapshot"
 if not os.path.exists("model"): os.makedirs("model")
@@ -17,9 +21,9 @@ if not os.path.exists("model"): os.makedirs("model")
 sub_dirs = os.listdir(parent_dir)
 
 def extract_features(file_name):
-    X, sample_rate = librosa.load(file_name, sr=48000, duration=4.0)
+    X, sample_rate = librosa.load(file_name, sr=SAMPLE_RATE, duration=SAMPLE_DURATION)
     duration = librosa.core.get_duration(X)
-    if duration < 4:
+    if duration < SAMPLE_DURATION:
         raise Exception("Too short - %d - skipping %s" %(duration, file_name))
     stft = np.abs(librosa.stft(X))
     mfccs = np.array(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=8).T)
@@ -64,7 +68,7 @@ except:
     print("Extracting features...")
     features, labels = parse_audio_files(parent_dir,sub_dirs)
     with open('features.npy', 'wb') as f1:
-        np.save(f1,features)
+        np.save(f1, features)
     with open('labels.npy', 'wb') as f2:
         np.save(f2, labels)
 
@@ -85,11 +89,12 @@ print("Training...")
 #### Training Neural Network with TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-training_epochs = 5000
+training_epochs = TRAINING_EPOCHS
 n_dim = features.shape[1]
 n_classes = len(sub_dirs)-1
 n_hidden_units_one = 256
 n_hidden_units_two = 256
+n_hidden_units_three = 256
 sd = 1 / np.sqrt(n_dim)
 learning_rate = 0.01
 
@@ -104,9 +109,13 @@ W_2 = tf.Variable(tf.random_normal([n_hidden_units_one,n_hidden_units_two], mean
 b_2 = tf.Variable(tf.random_normal([n_hidden_units_two], mean = 0, stddev=sd))
 h_2 = tf.nn.sigmoid(tf.matmul(h_1,W_2) + b_2 )
 
+W_3 = tf.Variable(tf.random_normal([n_hidden_units_two,n_hidden_units_three], mean = 0, stddev=sd))
+b_3 = tf.Variable(tf.random_normal([n_hidden_units_three], mean = 0, stddev=sd))
+h_3 = tf.nn.sigmoid(tf.matmul(h_2,W_3) + b_3 )
+
 W = tf.Variable(tf.random_normal([n_hidden_units_two, n_classes], mean=0, stddev=sd))
 b = tf.Variable(tf.random_normal([n_classes], mean=0, stddev=sd))
-y_ = tf.nn.softmax(tf.matmul(h_2, W) + b)
+y_ = tf.nn.softmax(tf.matmul(h_3, W) + b)
 
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
@@ -130,7 +139,7 @@ with tf.Session() as sess:
     sess.run(init)
     for epoch in range(training_epochs):
         if stopping == 0:
-            total_batch = int(train_x.shape[0] / batch_size)
+            total_batch = (train_x.shape[0] // batch_size)
             train_x = shuffle(train_x, random_state=42)
             train_y = shuffle(train_y, random_state=42)
             for i in range(total_batch):
