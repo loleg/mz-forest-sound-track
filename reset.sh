@@ -1,0 +1,2 @@
+rm *.npy
+rm model/*

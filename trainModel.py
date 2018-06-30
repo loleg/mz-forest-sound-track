@@ -33,22 +33,27 @@ def extract_features(file_name):
     tonnetz = np.array(librosa.feature.tonnetz(y=librosa.effects.harmonic(X), sr=sample_rate).T)
     return mfccs,chroma,mel,contrast,tonnetz
 
+def get_label(fn):
+    return sub_dirs.index(fn)
+    # return fn
+
 def parse_audio_files(parent_dir,sub_dirs,file_ext='*.wav'):
     ignored = 0
     features, labels, name = np.empty((0, N_DIM)), np.empty(0), np.empty(0)
     for label, sub_dir in enumerate(sub_dirs):
-        print(sub_dir)
+        print("Processing folder..", sub_dir)
         for fn in glob.glob(os.path.join(parent_dir, sub_dir, file_ext)):
             try:
                 mfccs, chroma, mel, contrast, tonnetz = extract_features(fn)
                 ext_features = np.hstack([mfccs, chroma, mel, contrast, tonnetz])
                 features = np.vstack([features,ext_features])
-                l = [fn.split('-')[1]] * (mfccs.shape[0])
+                fnlabel = get_label(sub_dir)
+                l = [fnlabel] * (mfccs.shape[0])
                 labels = np.append(labels, l)
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
-                print(e)
+                print(fn, e)
                 ignored += 1
     print("Ignored files: ", ignored)
     return np.array(features), np.array(labels, dtype = np.int)
@@ -91,7 +96,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 training_epochs = TRAINING_EPOCHS
 n_dim = features.shape[1]
-n_classes = len(sub_dirs)-1
+n_classes = len(sub_dirs)
 n_hidden_units_one = 256
 n_hidden_units_two = 256
 n_hidden_units_three = 256
@@ -133,7 +138,7 @@ patience = 16
 min_delta = 0.01
 stopping = 0
 
-cost_history = np.empty(shape=[1],dtype=float)
+cost_history = np.empty(shape=[1], dtype=float)
 y_true, y_pred = None, None
 with tf.Session() as sess:
     sess.run(init)

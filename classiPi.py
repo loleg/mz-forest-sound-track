@@ -8,11 +8,14 @@ import sounddevice
 from sklearn.preprocessing import StandardScaler
 
 duration = 1.0  # seconds
-sample_rate = 44100
+sample_rate = 48000
 
 parent_dir = "data"
 model_path = "model/snapshot"
 sub_dirs = os.listdir(parent_dir)
+
+for n, i in enumerate(sub_dirs):
+    print(n, i)
 
 def extract_features():
     features = np.empty((0,n_dim))
